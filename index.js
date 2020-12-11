@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const httpPromise  = require('./httpPromise');
 const stringSimilarity = require('string-similarity');
 const emre = require('./emre');
+const { request } = require('http');
 
 dotenv.config();
 
@@ -40,8 +41,18 @@ httpPromise(options)
                 return emre( res.body.toString( ) );
 
                 }).then( newCollection => {
+
+                    let requestData = {};
+                    // Test name
+                    newCollection.info.name = 'Zafer TESTTTTTTTTTTTT----11234';
+
+                    let {collection, ...removeCollection} = newCollection;
+
+                    requestData.collection = collection;
+                    requestData.collection.info.name = newCollection.info.name;
+                    requestData.collection.item = newCollection.item;
                 
-                    httpPromise(create,JSON.stringify(newCollection) ).then( res => {
+                    httpPromise(create,JSON.stringify(requestData) ).then( res => {
                         console.log(res);
                     }).catch( err => { console.log(err) });
                 })
